@@ -1,4 +1,4 @@
-package com.rev.user_service.dto.request;
+package com.rev.user_service.dto.response;
 
 import lombok.*;
 
@@ -7,18 +7,18 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateUserRequest {
+public class EmployeeDirectoryResponse {
+
+    private Long id;
+
+    private String employeeId;
 
     private String firstName;
 
     private String lastName;
 
-    private String phone;
-
     private String department;
 
     private String designation;
-
-    private Long managerId;
 
 }

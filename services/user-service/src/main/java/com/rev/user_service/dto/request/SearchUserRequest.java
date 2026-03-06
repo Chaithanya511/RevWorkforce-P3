@@ -7,18 +7,14 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UpdateUserRequest {
+public class SearchUserRequest {
 
-    private String firstName;
+    private String name;
 
-    private String lastName;
-
-    private String phone;
+    private String employeeId;
 
     private String department;
 
     private String designation;
-
-    private Long managerId;
 
 }
