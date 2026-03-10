@@ -28,4 +28,23 @@ public interface UserManagementService {
 
     List<EmployeeDirectoryResponse> getEmployeeDirectory();
 
+    long countByDepartmentId(Long departmentId);
+
+    long countByDesignationId(Long designationId);
+
+    // Missing methods
+    UserResponse getMyProfile(Long userId);
+
+    UserResponse updateMyProfile(Long userId, UpdateUserRequest request);
+
+    void changePassword(Long userId, String currentPassword, String newPassword);
+
+    UserResponse assignManager(Long userId, Long managerId);
+
+    List<EmployeeDirectoryResponse> getUsersByDepartment(Long departmentId);
+
+    List<EmployeeDirectoryResponse> getUsersByManager(Long managerId);
+
+    List<EmployeeDirectoryResponse> filterUsers(Long departmentId, Long designationId, Boolean active, String role);
+
 }

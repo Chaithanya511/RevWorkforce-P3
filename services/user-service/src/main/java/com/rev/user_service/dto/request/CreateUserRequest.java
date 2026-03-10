@@ -26,8 +26,20 @@ public class CreateUserRequest {
 
     private String designation;
 
+    private Long departmentId;
+
+    private Long designationId;
+
     private Long managerId;
 
     private Role role;
+    
+    private String emergencyContact;
+    
+    private java.time.LocalDate joiningDate;
+
+    private String address;
+
+    private Double salary;
 
 }

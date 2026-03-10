@@ -35,17 +35,41 @@ public class User {
 
     private String phone;
 
+    private String address;
+
+    private String city;
+
+    private String state;
+
+    @Column(name = "zip_code")
+    private String zipCode;
+
     private String department;
 
     private String designation;
 
+    @Column(name = "department_id")
+    private Long departmentId;
+
+    @Column(name = "designation_id")
+    private Long designationId;
+
     @Column(name = "manager_id")
     private Long managerId;
+
+    @Column(name = "emergency_contact")
+    private String emergencyContact;
+
+    @Column(name = "joining_date")
+    private java.time.LocalDate joiningDate;
+
+    private Double salary;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
 
+    @Builder.Default
     @Column(nullable = false)
     private Boolean active = true;
 

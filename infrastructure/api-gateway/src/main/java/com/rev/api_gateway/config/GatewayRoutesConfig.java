@@ -15,7 +15,7 @@ public class GatewayRoutesConfig {
 
                 // USER SERVICE
                 .route("user-service", r -> r
-                        .path("/auth/**", "/users/**")
+                        .path("/api/auth/**", "/api/users/**")
                         .filters(f -> f.circuitBreaker(c ->
                                 c.setName("userServiceCircuitBreaker")
                                         .setFallbackUri("forward:/fallback/user")))
@@ -24,11 +24,31 @@ public class GatewayRoutesConfig {
                         .path("/user-service/v3/api-docs")
                         .filters(f -> f.rewritePath("/user-service/(?<segment>.*)", "/${segment}"))
                         .uri("lb://USER-SERVICE"))
+                .route("employee-service-swagger", r -> r
+                        .path("/employee-management-service/v3/api-docs")
+                        .filters(f -> f.rewritePath("/employee-management-service/(?<segment>.*)", "/${segment}"))
+                        .uri("lb://EMPLOYEE-MANAGEMENT-SERVICE"))
+                .route("leave-service-swagger", r -> r
+                        .path("/leave-service/v3/api-docs")
+                        .filters(f -> f.rewritePath("/leave-service/(?<segment>.*)", "/${segment}"))
+                        .uri("lb://LEAVE-SERVICE"))
+                .route("notification-service-swagger", r -> r
+                        .path("/notification-service/v3/api-docs")
+                        .filters(f -> f.rewritePath("/notification-service/(?<segment>.*)", "/${segment}"))
+                        .uri("lb://NOTIFICATION-SERVICE"))
+                .route("performance-service-swagger", r -> r
+                        .path("/performance-service/v3/api-docs")
+                        .filters(f -> f.rewritePath("/performance-service/(?<segment>.*)", "/${segment}"))
+                        .uri("lb://PERFORMANCE-SERVICE"))
+                .route("reporting-service-swagger", r -> r
+                        .path("/reporting-service/v3/api-docs")
+                        .filters(f -> f.rewritePath("/reporting-service/(?<segment>.*)", "/${segment}"))
+                        .uri("lb://REPORTING-SERVICE"))
 
 
                 // EMPLOYEE MANAGEMENT SERVICE
                 .route("employee-service", r -> r
-                        .path("/employees/**", "/departments/**")
+                        .path("/api/departments/**", "/api/designations/**", "/api/announcements/**")
                         .filters(f -> f.circuitBreaker(c ->
                                 c.setName("employeeServiceCircuitBreaker")
                                         .setFallbackUri("forward:/fallback/employee")))
@@ -36,7 +56,7 @@ public class GatewayRoutesConfig {
 
                 // LEAVE SERVICE
                 .route("leave-service", r -> r
-                        .path("/leave/**")
+                        .path("/api/leaves/**", "/api/leave-types/**")
                         .filters(f -> f.circuitBreaker(c ->
                                 c.setName("leaveServiceCircuitBreaker")
                                         .setFallbackUri("forward:/fallback/leave")))
@@ -44,7 +64,7 @@ public class GatewayRoutesConfig {
 
                 // PERFORMANCE SERVICE
                 .route("performance-service", r -> r
-                        .path("/performance/**", "/goals/**")
+                        .path("/api/performance/**", "/api/goals/**")
                         .filters(f -> f.circuitBreaker(c ->
                                 c.setName("performanceServiceCircuitBreaker")
                                         .setFallbackUri("forward:/fallback/performance")))
@@ -52,7 +72,7 @@ public class GatewayRoutesConfig {
 
                 // NOTIFICATION SERVICE
                 .route("notification-service", r -> r
-                        .path("/notifications/**")
+                        .path("/api/notifications/**")
                         .filters(f -> f.circuitBreaker(c ->
                                 c.setName("notificationServiceCircuitBreaker")
                                         .setFallbackUri("forward:/fallback/notification")))
@@ -60,7 +80,7 @@ public class GatewayRoutesConfig {
 
                 // REPORTING SERVICE
                 .route("reporting-service", r -> r
-                        .path("/reports/**")
+                        .path("/api/dashboard/**", "/api/reports/**", "/api/activity/**")
                         .filters(f -> f.circuitBreaker(c ->
                                 c.setName("reportingServiceCircuitBreaker")
                                         .setFallbackUri("forward:/fallback/report")))

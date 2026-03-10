@@ -31,7 +31,7 @@ public class UserManagementController {
     @Operation(summary = "Get manager of a user")
     @ApiResponse(responseCode = "200", description = "Manager fetched successfully")
     @GetMapping("/{id}/manager")
-    public ResponseEntity<UserResponse> getManager(@PathVariable Long id) {
+    public ResponseEntity<UserResponse> getManager(@PathVariable("id") Long id) {
 
         return ResponseEntity.ok(userService.getManager(id));
     }
@@ -47,7 +47,7 @@ public class UserManagementController {
     @Operation(summary = "Get team members under a manager")
     @GetMapping("/manager/{managerId}/team")
     public ResponseEntity<List<EmployeeDirectoryResponse>> getTeamMembers(
-            @PathVariable Long managerId) {
+            @PathVariable("managerId") Long managerId) {
 
         return ResponseEntity.ok(userService.getTeamMembers(managerId));
     }
@@ -56,14 +56,13 @@ public class UserManagementController {
     @ApiResponse(responseCode = "200", description = "User created successfully")
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest request) {
-
         return ResponseEntity.ok(userService.createUser(request));
     }
 
     @Operation(summary = "Update existing user")
     @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(
-            @PathVariable Long id,
+            @PathVariable("id") Long id,
             @RequestBody UpdateUserRequest request) {
 
         return ResponseEntity.ok(userService.updateUser(id, request));
@@ -71,7 +70,7 @@ public class UserManagementController {
 
     @Operation(summary = "Get user by ID")
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
+    public ResponseEntity<UserResponse> getUser(@PathVariable("id") Long id) {
 
         return ResponseEntity.ok(userService.getUserById(id));
     }
@@ -86,7 +85,7 @@ public class UserManagementController {
 
     @Operation(summary = "Deactivate user")
     @PutMapping("/{id}/deactivate")
-    public ResponseEntity<Void> deactivateUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deactivateUser(@PathVariable("id") Long id) {
 
         userService.deactivateUser(id);
         return ResponseEntity.ok().build();
@@ -94,9 +93,61 @@ public class UserManagementController {
 
     @Operation(summary = "Reactivate user")
     @PutMapping("/{id}/reactivate")
-    public ResponseEntity<Void> reactivateUser(@PathVariable Long id) {
+    public ResponseEntity<Void> reactivateUser(@PathVariable("id") Long id) {
 
         userService.reactivateUser(id);
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Count users by department")
+    @GetMapping("/department/{departmentId}/count")
+    public ResponseEntity<Long> countUsersByDepartment(@PathVariable("departmentId") Long departmentId) {
+        return ResponseEntity.ok(userService.countByDepartmentId(departmentId));
+    }
+
+    @Operation(summary = "Count users by designation")
+    @GetMapping("/designation/{designationId}/count")
+    public ResponseEntity<Long> countUsersByDesignation(@PathVariable("designationId") Long designationId) {
+        return ResponseEntity.ok(userService.countByDesignationId(designationId));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getMyProfile(@RequestHeader("X-User-Id") Long userId) {
+        return ResponseEntity.ok(userService.getMyProfile(userId));
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<UserResponse> updateMyProfile(@RequestHeader("X-User-Id") Long userId, @RequestBody UpdateUserRequest request) {
+        return ResponseEntity.ok(userService.updateMyProfile(userId, request));
+    }
+
+    @PutMapping("/me/change-password")
+    public ResponseEntity<Void> changePassword(@RequestHeader("X-User-Id") Long userId, @RequestBody java.util.Map<String, String> request) {
+        userService.changePassword(userId, request.get("currentPassword"), request.get("newPassword"));
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/assign-manager")
+    public ResponseEntity<UserResponse> assignManager(@RequestBody java.util.Map<String, Long> request) {
+        return ResponseEntity.ok(userService.assignManager(request.get("userId"), request.get("managerId")));
+    }
+
+    @GetMapping("/department/{departmentId}/users")
+    public ResponseEntity<List<EmployeeDirectoryResponse>> getUsersByDepartment(@PathVariable("departmentId") Long departmentId) {
+        return ResponseEntity.ok(userService.getUsersByDepartment(departmentId));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<EmployeeDirectoryResponse>> filterUsers(
+            @RequestParam(required = false) Long departmentId,
+            @RequestParam(required = false) Long designationId,
+            @RequestParam(required = false) Boolean active,
+            @RequestParam(required = false) String role) {
+        return ResponseEntity.ok(userService.filterUsers(departmentId, designationId, active, role));
+    }
+
+    @GetMapping("/managers")
+    public ResponseEntity<List<EmployeeDirectoryResponse>> getAllManagers() {
+        return ResponseEntity.ok(userService.filterUsers(null, null, true, "MANAGER"));
     }
 }

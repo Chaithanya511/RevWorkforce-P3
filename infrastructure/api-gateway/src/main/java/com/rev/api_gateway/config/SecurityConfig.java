@@ -9,8 +9,8 @@ public class SecurityConfig {
 
     public static final List<String> PUBLIC_ROUTES = List.of(
 
-            "/auth/login",
-            "/auth/register",
+            "/api/auth/login",
+            "/api/auth/register",
 
             "/actuator",
             "/actuator/**",
@@ -32,6 +32,8 @@ public class SecurityConfig {
     );
 
     public static boolean isPublicRoute(String path) {
-        return PUBLIC_ROUTES.stream().anyMatch(path::startsWith);
+        return PUBLIC_ROUTES.stream().anyMatch(route -> 
+            path.equals(route) || path.startsWith(route + "/")
+        );
     }
 }
